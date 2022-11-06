@@ -1,0 +1,115 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs'
+    id 'com.google.gms.google-services'
+}
+apply from: '../dependencies.gradle'
+android {
+    namespace 'com.livin.ikhokhatechcheck'
+    compileSdk versions.compileSdk
+
+    defaultConfig {
+        applicationId "com.ikhokha.techcheck"
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+
+        Properties secretProperties = new Properties()
+        secretProperties.load(project.rootProject.file("secrets.properties")
+                .newDataInputStream())
+
+        buildConfigField "String", "INTERNAL_USER_USERNAME", "\"${secretProperties.getProperty("INTERNAL_USER_USERNAME")}\""
+        buildConfigField "String", "INTERNAL_USER_PASSWORD", "\"${secretProperties.getProperty("INTERNAL_USER_PASSWORD")}\""
+        buildConfigField "String", "FIREBASE_DB_END_POINT", "\"${secretProperties.getProperty("FIREBASE_DB_END_POINT")}\""
+        buildConfigField "String", "IMAGE_URL_END_POINT", "\"${secretProperties.getProperty("IMAGE_URL_END_POINT")}\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+        viewBinding true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.2'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    //AndroidX| Core
+    implementation deps.androidx.core
+    implementation deps.androidx.appcompat
+    //AndroidX| Ui
+    implementation deps.androidx.material
+    implementation deps.androidx.constraint_layout
+    //AndroidX| Lifecycle
+    implementation deps.androidx.lifecycle_viewmodel
+    implementation deps.androidx.lifecycle_runtime
+
+
+
+    //Compose
+    implementation deps.compose.activity
+    implementation deps.compose.ui
+    implementation deps.compose.tooling_preview
+    implementation deps.compose.material3
+    implementation deps.compose.navigation
+    implementation deps.compose.lifecycle_compose
+    implementation deps.compose.runtime_compose
+    implementation deps.compose.coil
+    implementation deps.compose.icons
+
+    debugImplementation "androidx.compose.ui:ui-tooling:1.3.0"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:1.3.0"
+    //Ml Kit
+    implementation deps.mlkit_barcode
+
+    //Room
+    implementation deps.room.room_runtime
+    implementation deps.room.room_ktx
+    kapt deps.room.room_compiler
+
+    //Google| Dagger HILT
+    implementation deps.google.hilt
+    kapt deps.google.hilt_compiler
+    implementation deps.google.playcore
+    implementation deps.google.hilt_navigation
+
+    //Firebase
+    implementation deps.firebase.auth
+    implementation deps.firebase.realtime_database
+    implementation deps.firebase.storage
+
+    //Camera
+    implementation deps.camera.camera_core
+    implementation deps.camera.camera_life_cycle
+    implementation deps.camera.camera_view
+    implementation deps.camera.camera2
+    implementation deps.camera.camera_extn
+
+}

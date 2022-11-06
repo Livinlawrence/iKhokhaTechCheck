@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Busy Shop</string>
+    <string name="back_button">Back button</string>
+    <string name="login">Login</string>
+    <string name="home">Busy Shop</string>
+    <string name="my_cart">My cart</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="new_order">New busy shop order</string>
+    <string name="share">Share reciept</string>
+</resources>
